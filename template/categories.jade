@@ -1,0 +1,30 @@
+extends base.jade
+
+block search
+
+block title
+	title= '所有分类' + ' - ' + site.title
+
+block scream
+
+block menu
+
+// 开始修改main内容
+block content
+	.autopagerize_page_element:.content(style="margin-bottom: 80px!important;")
+		.archive-menu
+			a(href='/posts',style="color:#8d8d8d") 所有文章
+			a(style="color:#333;") 所有分类
+			a(href='/tags',style="color:#8d8d8d") 所有标签
+		.post.animated.fadeInDown
+			.post_title.post_detail_title.archive_post_title
+				h2: a Categories
+		.categories	
+		    for category in posts.categories
+					.categories-list		
+							a(href=category.url):.categories-img(style='background-image:url({{category.cover}})')
+		 	    		   // 取得各分类名称及对应链接
+			     		   a(href=category.url).categories-title= category.title
+						   	a(href=category.url).categories-description= category.content
+					.clear
+	+load('/template/js/end.js')

@@ -1,0 +1,78 @@
+extends base.jade
+
+block search
+
+block title
+	title= post.title + ' - ' + site.title
+
+block menu
+
+block scream
+
+block content
+	.autopagerize_page_element: .content: .post_page
+		.post.animated.fadeInDown
+
+        	if post.metadata.format
+        		- var formats = post.metadata.format
+        	else
+        		- var formats = post.category.filename
+        	if formats == "chat"
+        		.chat(style="margin-top:-80px;")
+					.chat-avatar
+						img(src=site.admin_avatar)
+        			.chat-content
+						post.content
+					.chat-date
+						span.date= post.date.format("我在%Y年%m月%d日%H时这样说道")
+					.clear
+        	else
+
+	            .post_detail_time
+	            	span.month= post.date("%m")
+	            	span.day= post.date("%d")
+	            	.clear
+	            .post_title.post_detail_title
+					h2: a= post.title
+					if ( post.metadata.subtitle )
+						p(class="post-subtitle")= post.metadata.subtitle
+					span.date= "Posted in " + post.date.format("%Y")
+				if ( post.category )
+					.post-cate
+						a(href=post.category.url)
+							.cate-img
+								img(src=post.category.cover)
+						此文章分类在
+						p:a(href=post.category.url)= post.category.title
+	            if ( post.cover )
+					bgcover = post.cover
+	            	.cover
+	            		img(src=bgcover)
+				
+				div(class="post_content markdown",id="post_content")
+					post.content
+
+				.post_footer:.meta: .info
+					if post.tags: span.field.tags
+						a #
+						for tag in post.tags
+							a.tag(href='/tag/{{tag}}')= tag
+				
+				.blog-info(style="padding:0;")
+					include author.jade
+    	
+
+    	+post.comments_as_html()
+
+
+		include smilies.jade
+		+h.load("/template/js/smilies.js") 
+
+	script
+	    $(document).ready(function () {
+	        jQuery.viewImage({
+	            'target' : '.md_compiled', //需要使用ViewImage的图片
+	            'exclude': '.exclude img',    //要排除的图片
+	            'delay'  : 300                //延迟时间
+	        });
+	    });

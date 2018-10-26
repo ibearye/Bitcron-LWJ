@@ -1,0 +1,62 @@
+html
+	head
+		+h.headers
+		block title
+                title= site.title + ' - ' + site.configs.sub_title
+		+load('font')
+		+h.load('markdown')
+		+h.load('animation')
+		+load('/template/style.scss')
+		+load('/template/js/start.js')
+		+load('/template/js/view-image.js')
+	body#body
+		.main.animated
+			.header.animated.fadeInDown#head
+				.site_title_container
+					.site_title
+						a(class='', href='/')
+							img(src=site.site_avatar)
+					block search
+						.search
+							.search-box
+								i(class="fa fa-search")
+								+posts.search_in_html(base_url='/result')
+					block scream
+						.scream
+							include scream.jade
+				.clear
+
+			block menu
+				.main-menu#main-menu
+        			+site.just_nav
+
+			block content
+
+			+h.back_to_top(label='↑')
+
+
+	    script
+	        $(document).ready (function() {
+	            var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+	            var location_href = window.location.href.replace(parse_url,'$3')
+	            $('.post_content a:not(:has(img)),.author-name a').hover(function() {
+	                var this_href = $(this).attr('href');
+	                var replace_href = this_href.replace(parse_url,'$3');
+	                if ( this_href != replace_href && location_href != replace_href)
+	                    $(this).attr('target','_blank'); 
+	            });
+	        });
+		
+
+		block footer
+
+			.footer
+
+				.powered_by
+					a(href="https://nooooe.cn") Designed by Bearye,
+					a(href="https://www.bitcron.com", target="_blank") Proudly published with Bitcron!
+
+				.footer_slogan
+					+font("hanazono")
+						span 重复着无意之事
+					+load('/template/js/app.js')

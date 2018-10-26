@@ -1,0 +1,26 @@
+extends base.jade
+
+block search
+
+block title
+	title= '所有标签' + ' - ' + site.title
+
+block scream
+
+block menu
+
+// 开始修改main内容
+block content
+	.autopagerize_page_element:.content(style="margin-bottom: 80px!important;")
+		.archive-menu
+			a(href='/posts',style="color:#8d8d8d") 所有文章
+			a(href='/categories',style="color:#8d8d8d") 所有分类
+			a(style="color:#333;") 所有标签
+		.post.animated.fadeInDown
+			.post_title.post_detail_title.archive_post_title
+				h2: a Tags
+		for tag_name, tag_count in site.tags
+        	a(href='/tag/{{tag_name}}',class="archive_tags")= tag_name
+        .clear
+
+	+load('/template/js/end.js')

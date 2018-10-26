@@ -1,0 +1,76 @@
+extends base.jade
+
+block search
+
+block title
+	title= posts.category.title + " - " + site.title
+
+block scream
+
+block content
+
+	.category-info
+		.category-img(style='background-image:url({{posts.category.cover}})')
+		.category-words
+			.category-title
+				p= posts.category.title
+			.category-description
+				p(style="font-size:14px;")= posts.category.content
+		.clear
+
+	.autopagerize_page_element.index-autopagerize_page_element
+		.content.index-content
+			.index-posts
+				for post in posts: .post.animated.fadeInDown
+					
+		        	if post.metadata.format
+		        		- var formats = post.metadata.format
+		        	else
+		        		- var formats = post.category.filename
+		        	if formats == "chat"
+		        		.chat
+		        			.chat-avatar
+			        			a(href=post.url)
+		        					img(src=site.admin_avatar)
+		        			.chat-content
+		        				a(href=post.url)
+   		    						post.content
+        					.chat-date
+    							span.date= post.date.format("我在%Y年%m月%d日%H时这样说道")
+        					.clear
+		        	else
+						bgcover = 'http://coffin.wpista.com/wp-content/themes/Coffin/build/images/default.jpeg'
+						if ( post.cover )
+							bgcover = post.cover
+						a(href=post.url): .post-image(style='background-image:url({{bgcover}})')
+						.post-info
+							span.field
+								
+							.post_title
+								h2: a(href=post.url)= post.title
+							.content-words
+								p= post.content.limit(words=45, keep_images=false).plain
+							span.field
+								span.date= post.date.format("%h %d,%Y")
+
+
+			+h.i18n('Back to Previous Page', '返回上一页', 'zh_cn')
+			+h.i18n('Read More Posts', '阅读更多文章', 'zh_cn')
+			+h.paginator(pre_label=_('Back to Previous Page'), next_label=_('Read More Posts'))
+
+		.sidebar
+			.widget-category-info
+			    div
+					a
+						img(src=posts.category.cover, class='avatar' , width="32px",style="vertical-align: middle;" )
+					a= posts.category.title
+				p(style="font-size:14px;margin:15px 0 0 0;color: rgba(0,0,0,.44);") POSTS
+				a(style="margin:0 0 30px 0")= posts.category.posts_count
+
+			.widget-categories
+				.widget-title Categories
+				div	
+				    for category in posts.categories
+				    	a(href=category.url)
+							img(src=category.cover)
+							category.title

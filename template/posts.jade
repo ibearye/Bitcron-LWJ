@@ -1,0 +1,54 @@
+extends base.jade
+
+block search
+
+block title
+	title= '所有文章' + ' - ' + site.title
+
+block scream
+
+block menu
+
+// 开始修改main内容
+block content
+	.autopagerize_page_element:.content
+		.archive-menu
+			a(style="color:#333;") 所有文章
+			a(href='/categories',style="color:#8d8d8d") 所有分类
+			a(href='/tags',style="color:#8d8d8d") 所有标签
+		.post.animated.fadeInDown
+			.post_title.post_detail_title.archive_post_title
+				h2: a Posts
+		ul.list_with_title
+			entries = d.get_data(type='post',limit=12, sort='desc').group('-date:year')
+			for year, posts in entries
+				div.listing_title= year
+				.index-posts(style="margin:0")
+					for post in posts
+						if post.metadata.format
+			        		- var formats = post.metadata.format
+			        	else
+			        		- var formats = post.category.filename
+			        	if formats == "chat"
+			        		li.listing_item.animated
+			        			a(href=post.url, title=post.title)
+									.listing_post_cover(style="background-image:url(template/include/chat.svg)")
+								.listing_post
+									h2: a(href=post.url, title=post.title)= post.title
+									div.post_time
+										span.cate: a(href=post.category.url)= post.category.title
+										span.date= "· " + post.date("%m-%d")
+			        	else
+
+							li.listing_item.animated
+								a(href=post.url, title=post.title)
+									.listing_post_cover(style="background-image:url({{post.cover}})")
+								.listing_post
+									h2: a(href=post.url, title=post.title)= post.title
+									div.post_time
+										span.cate: a(href=post.category.url)= post.category.title
+										span.date= "· " + post.date("%m-%d")
+					.clear
+				+h.paginator(pre_label=_('Prev'), next_label=_('加载更多文章'))
+
+	+load('/template/js/end.js')
